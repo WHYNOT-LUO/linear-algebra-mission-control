@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#060810">
+<meta name="color-scheme" content="dark">
+<title>Linear Algebra · Mission Control</title>
+<meta name="description" content="A 30-day linear algebra study tracker built around Gilbert Strang's MIT 18.06 and 3Blue1Brown: daily plan, progress tracking, flashcards, quizzes and interactive geometry visualizations. Runs entirely in the browser.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Linear Algebra · Mission Control">
+<meta property="og:description" content="30-day linear algebra mission: MIT 18.06 + 3Blue1Brown, with progress tracking, flashcards, quizzes and interactive visualizations.">
+<meta property="og:image" content="assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script defer src="js/storage.js"></script>
+<script defer src="js/curriculum.js"></script>
+<script defer src="js/quiz-data.js"></script>
+<script defer src="js/app.js"></script>
+<script defer src="js/tutor.js"></script>
+<script defer src="js/quiz.js"></script>
+<script defer src="js/visuals.js"></script>
+<script defer src="js/main.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<noscript><p style="padding:24px;text-align:center;color:#c2ccdf">This app needs JavaScript to run.</p></noscript>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="mission-badge">30-DAY LINEAR ALGEBRA MISSION</div>
+  <h1 class="hero-title">LINEAR<br><span class="accent">ALGEBRA</span></h1>
+  <p class="hero-subtitle">Gilbert Strang · 3Blue1Brown · MIT OpenCourseWare</p>
+  <div class="xp-container">
+    <div class="xp-label"><span class="l">MISSION XP</span><span class="r" id="xp-text">0 / 90 complete</span></div>
+    <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-chip"><div class="stat-val" id="hero-done">0</div><div class="stat-lbl">Done</div></div>
+    <div class="stat-chip"><div class="stat-val" id="hero-streak">0🔥</div><div class="stat-lbl">Streak</div></div>
+    <div class="stat-chip"><div class="stat-val" id="hero-pct">0%</div><div class="stat-lbl">Progress</div></div>
+    <div class="stat-chip"><div class="stat-val" id="hero-days">30</div><div class="stat-lbl">Days Left</div></div>
+  </div>
+  <div class="scroll-hint">▼ scroll to begin ▼</div>
+</section>
+
+<main id="main">
+<!-- RESOURCE OVERVIEW -->
+<div class="section">
+  <div class="section-label">Your Three Weapons — use them in this exact order every day</div>
+  <div class="resources-grid">
+    <div class="res-card r3b1b">
+      <div class="res-card-glow"></div>
+      <div class="res-icon">▶</div><div class="res-step">Step 1 — Always First</div>
+      <div class="res-name">3Blue1Brown</div><div class="res-role">Visual Ignition</div>
+      <p class="res-desc">Watch <em>before</em> anything else. Grant's animations burn the geometric picture into your mind. No notes — just sketch what you see.</p>
+      <div class="res-usage">~10–15 min · Blue linked titles open directly on YouTube</div>
+    </div>
+    <div class="res-card rmit">
+      <div class="res-card-glow"></div>
+      <div class="res-icon">📖</div><div class="res-step">Step 2 — Main Engine</div>
+      <div class="res-name">MIT 18.06</div><div class="res-role">Deep Work</div>
+      <p class="res-desc">Strang's OCW lectures + 18.06SC topical problem sets. Each set is matched exactly to that day's topic — with full worked solutions.</p>
+      <div class="res-usage">~45–60 min · 📝 Problems then 💡 Solutions to verify</div>
+    </div>
+    <div class="res-card rcam">
+      <div class="res-card-glow"></div>
+      <div class="res-icon">⚡</div><div class="res-step">Step 3 — Challenge Layer</div>
+      <div class="res-name">Challenge Problems</div><div class="res-role">Proof &amp; Depth</div>
+      <p class="res-desc">Harder MIT exam problems matched to the exact topic. Getting stuck reveals exactly where your understanding has gaps.</p>
+      <div class="res-usage">~20–30 min · Green titles = challenge material</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE CARDS -->
+<div class="section" style="padding-top:0">
+  <div class="section-label">Study Tools</div>
+  <div class="feature-row">
+    <div class="feature-card blue" onclick="switchPage('ai')">
+      <div class="feature-card-icon">🤖</div>
+      <div class="feature-card-title">AI Tutor</div>
+      <div class="feature-card-desc">Ask anything about linear algebra and get geometric intuition, worked examples and clarifications. Uses your own Anthropic API key, stored only in your browser.</div>
+      <button class="feature-card-cta">Open AI Tutor →</button>
+    </div>
+    <div class="feature-card gold" onclick="switchPage('quiz')">
+      <div class="feature-card-icon">🃏</div>
+      <div class="feature-card-title">Flashcards &amp; Quiz</div>
+      <div class="feature-card-desc">Flip-card flashcards and multiple choice questions across all 4 weeks. Test what you know, track your scores.</div>
+      <button class="feature-card-cta">Start Quiz →</button>
+    </div>
+    <div class="feature-card purple" onclick="switchPage('vis')">
+      <div class="feature-card-icon">🌀</div>
+      <div class="feature-card-title">Visualizations</div>
+      <div class="feature-card-desc">Interactive animations: matrix transformations, eigenvectors, projections, and SVD — see the geometry live.</div>
+      <button class="feature-card-cta">Explore Visuals →</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK NAV -->
+<nav class="week-nav" id="week-nav">
+  <button class="nav-tab active" id="wbtn-0">W1 <span class="tab-prog" id="tp-0">0/21</span></button>
+  <button class="nav-tab" id="wbtn-1">W2 <span class="tab-prog" id="tp-1">0/21</span></button>
+  <button class="nav-tab" id="wbtn-2">W3 <span class="tab-prog" id="tp-2">0/21</span></button>
+  <button class="nav-tab" id="wbtn-3">W4 <span class="tab-prog" id="tp-3">0/27</span></button>
+  <div class="nav-sep"></div>
+  <button class="extra-tab ai-tab" id="ai-nav-btn">🤖 AI TUTOR</button>
+  <button class="extra-tab quiz-tab" id="quiz-nav-btn">🃏 QUIZ</button>
+  <button class="extra-tab vis-tab" id="vis-nav-btn">🌀 VISUALS</button>
+  <div class="nav-sep"></div>
+  <button class="extra-tab stats-tab" id="stats-nav-btn">📊 STATS</button>
+  <button class="extra-tab gallery-tab" id="gallery-nav-btn">📸 GALLERY</button>
+  <div class="nav-right">
+    <div class="streak-badge"><span class="fire">🔥</span><span id="nav-streak">0</span></div>
+    <div class="week-xp-pill">XP <span class="week-xp-val" id="week-xp">0/21</span></div>
+  </div>
+</nav>
+
+<div id="weeks-container"></div>
+
+<!-- STATS PAGE -->
+<div id="stats-page">
+  <div class="stats-page-title">📊 Mission Stats</div>
+  <div class="stats-page-sub">Your complete learning overview — every number that matters.</div>
+  <div class="stats-cards">
+    <div class="stat-card blue"><div class="stat-card-val" id="sc-done">0</div><div class="stat-card-lbl">Tasks Done</div><div class="stat-card-sub" id="sc-done-sub">of 90 total</div></div>
+    <div class="stat-card gold"><div class="stat-card-val" id="sc-streak">0</div><div class="stat-card-lbl">Day Streak</div><div class="stat-card-sub">days in a row</div></div>
+    <div class="stat-card green"><div class="stat-card-val" id="sc-days">0</div><div class="stat-card-lbl">Days Active</div><div class="stat-card-sub">with completed tasks</div></div>
+    <div class="stat-card purple"><div class="stat-card-val" id="sc-uploads">0</div><div class="stat-card-lbl">Uploads</div><div class="stat-card-sub">sketches &amp; photos</div></div>
+  </div>
+  <div class="calendar-label">30-Day Mission Calendar</div>
+  <div class="calendar-grid" id="cal-grid"></div>
+  <div class="calendar-label">Progress by Week</div>
+  <div class="week-bars" id="week-bars"></div>
+</div>
+
+<!-- GALLERY PAGE -->
+<div id="gallery-page">
+  <div class="gallery-title">📸 My Work Gallery</div>
+  <div class="gallery-sub">Every sketch and photo uploaded — your learning progress made visible.</div>
+  <div id="gallery-content"></div>
+</div>
+
+<!-- AI TUTOR PAGE -->
+<div id="ai-page">
+  <div class="ai-page-title">🤖 AI Tutor</div>
+  <div class="ai-page-sub">Ask me anything about linear algebra — I'll explain with geometry and intuition.</div>
+
+  <div class="ai-key-panel" id="ai-key-panel">
+    <div class="ai-key-title">🔑 Connect your Anthropic API key</div>
+    <p class="ai-key-note">This site has no backend, so the tutor calls the Anthropic API straight from your browser using <em>your</em> key. The key is kept only in this browser's local storage and is sent only to <code>api.anthropic.com</code>. Use a key with a spend limit, and remove it when you are done on a shared computer.</p>
+    <form class="ai-key-row" id="ai-key-form" autocomplete="off">
+      <input type="password" class="ai-key-input" id="ai-key-input" placeholder="sk-ant-…" aria-label="Anthropic API key" autocomplete="off" spellcheck="false">
+      <button type="submit" class="ai-key-btn">Save key</button>
+    </form>
+    <a class="ai-key-link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Get a key from the Anthropic Console →</a>
+  </div>
+  <div class="ai-key-status" id="ai-key-status" hidden>
+    <span id="ai-key-status-text"></span>
+    <button type="button" class="ai-key-remove" id="ai-key-remove">Remove key</button>
+  </div>
+
+  <select class="ai-topic-select" id="ai-topic-select" aria-label="Topic context">
+    <option value="">Choose a topic context (optional)</option>
+    <option value="vectors">Vectors &amp; linear combinations</option>
+    <option value="matrices">Matrices &amp; transformations</option>
+    <option value="elimination">Gaussian elimination &amp; LU</option>
+    <option value="subspaces">Vector spaces &amp; subspaces</option>
+    <option value="nullspace">Nullspace &amp; column space</option>
+    <option value="orthogonality">Orthogonality &amp; projections</option>
+    <option value="leastsquares">Least squares</option>
+    <option value="determinants">Determinants</option>
+    <option value="eigenvalues">Eigenvalues &amp; eigenvectors</option>
+    <option value="diagonalization">Diagonalization</option>
+    <option value="svd">Singular Value Decomposition</option>
+    <option value="fourkeysubspaces">Four fundamental subspaces</option>
+  </select>
+  <div class="ai-quick-btns">
+    <button class="ai-quick-btn" onclick="aiQuick('Give me geometric intuition for eigenvectors')">Eigenvector intuition</button>
+    <button class="ai-quick-btn" onclick="aiQuick('Why does A=LU factorization work?')">Why A=LU?</button>
+    <button class="ai-quick-btn" onclick="aiQuick('Explain the four fundamental subspaces visually')">4 subspaces</button>
+    <button class="ai-quick-btn" onclick="aiQuick('What does the determinant geometrically mean?')">Det geometry</button>
+    <button class="ai-quick-btn" onclick="aiQuick('Explain SVD with a simple example')">SVD explained</button>
+    <button class="ai-quick-btn" onclick="aiQuick('Why do orthogonal matrices preserve length?')">Orthogonal matrices</button>
+  </div>
+  <div class="ai-chat" id="ai-chat">
+    <div class="ai-msg assistant">
+      <div class="ai-msg-avatar">∑</div>
+      <div class="ai-msg-bubble">Hello! I'm your linear algebra tutor. I specialise in geometric intuition — I'll help you <strong>see</strong> the maths, not just compute it.<br><br>Ask me anything: why eigenvectors matter, what the nullspace really is, how SVD works, or anything you're stuck on from your 30-day plan.</div>
+    </div>
+  </div>
+  <div class="ai-input-row">
+    <textarea class="ai-input" id="ai-input" rows="2" aria-label="Your question" placeholder="Ask anything about linear algebra... (Enter to send, Shift+Enter for newline)"></textarea>
+    <button class="ai-send-btn" id="ai-send-btn" onclick="sendAI()">SEND →</button>
+  </div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div id="quiz-page">
+  <div class="quiz-page-title">🃏 Flashcards &amp; Quiz</div>
+  <div class="quiz-page-sub">Test your knowledge. Flip cards reveal answers — MC questions test deeper understanding.</div>
+  <div class="quiz-mode-row">
+    <button class="quiz-mode-btn active" id="qmode-flash" onclick="setQuizMode('flash')">🃏 Flashcards</button>
+    <button class="quiz-mode-btn" id="qmode-mc" onclick="setQuizMode('mc')">🎯 Multiple Choice</button>
+    <button class="quiz-mode-btn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+  </div>
+  <div class="quiz-filter" id="quiz-filter">
+    <button class="quiz-filter-btn active" data-week="all" onclick="setQuizFilter('all')">All Weeks</button>
+    <button class="quiz-filter-btn" data-week="1" onclick="setQuizFilter('1')">Week 1</button>
+    <button class="quiz-filter-btn" data-week="2" onclick="setQuizFilter('2')">Week 2</button>
+    <button class="quiz-filter-btn" data-week="3" onclick="setQuizFilter('3')">Week 3</button>
+    <button class="quiz-filter-btn" data-week="4" onclick="setQuizFilter('4')">Week 4</button>
+  </div>
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-prog-fill" style="width:0%"></div></div>
+  <div id="quiz-content"></div>
+  <div class="quiz-score-display">
+    <div class="qs-chip c"><div class="qs-val" id="qs-correct">0</div><div class="qs-lbl">Correct</div></div>
+    <div class="qs-chip w"><div class="qs-val" id="qs-wrong">0</div><div class="qs-lbl">Wrong</div></div>
+    <div class="qs-chip"><div class="qs-val" id="qs-pct" style="color:var(--gold)">—</div><div class="qs-lbl">Score</div></div>
+  </div>
+</div>
+
+<!-- VISUALIZATION PAGE -->
+<div id="vis-page">
+  <div class="vis-page-title">🌀 Visualizations</div>
+  <div class="vis-page-sub">Interactive geometry — see linear algebra come alive.</div>
+  <div class="vis-grid">
+
+    <!-- Viz 1: Matrix Transformation -->
+    <div class="vis-card">
+      <div class="vis-card-header">
+        <div class="vis-card-title">Matrix Transformation</div>
+        <span class="vis-card-tag" style="background:var(--blue3);color:var(--blue)">Week 1</span>
+      </div>
+      <div class="vis-canvas-wrap"><canvas class="vis-canvas" id="c-transform" height="260" role="img" aria-label="Interactive plot: the unit square and basis vectors transformed by a 2 by 2 matrix"></canvas></div>
+      <div class="vis-controls">
+        <span class="vis-ctrl-label">a</span>
+        <input type="range" class="vis-slider" id="mt-a" aria-label="Matrix entry a" min="-2" max="2" step="0.05" value="1" oninput="drawTransform()">
+        <span class="vis-val" id="mt-a-val">1.0</span>
+        <span class="vis-ctrl-label">b</span>
+        <input type="range" class="vis-slider" id="mt-b" aria-label="Matrix entry b" min="-2" max="2" step="0.05" value="0.5" oninput="drawTransform()">
+        <span class="vis-val" id="mt-b-val">0.5</span>
+      </div>
+      <div class="vis-controls" style="border-top:none;padding-top:0">
+        <span class="vis-ctrl-label">c</span>
+        <input type="range" class="vis-slider" id="mt-c" aria-label="Matrix entry c" min="-2" max="2" step="0.05" value="0" oninput="drawTransform()">
+        <span class="vis-val" id="mt-c-val">0.0</span>
+        <span class="vis-ctrl-label">d</span>
+        <input type="range" class="vis-slider" id="mt-d" aria-label="Matrix entry d" min="-2" max="2" step="0.05" value="1" oninput="drawTransform()">
+        <span class="vis-val" id="mt-d-val">1.0</span>
+      </div>
+      <div class="vis-desc">Drag sliders to change matrix [[a,b],[c,d]]. Watch the unit square and basis vectors transform. The determinant = signed area of the transformed square.</div>
+    </div>
+
+    <!-- Viz 2: Eigenvectors -->
+    <div class="vis-card">
+      <div class="vis-card-header">
+        <div class="vis-card-title">Eigenvectors Live</div>
+        <span class="vis-card-tag" style="background:var(--gold3);color:var(--gold)">Week 3–4</span>
+      </div>
+      <div class="vis-canvas-wrap"><canvas class="vis-canvas" id="c-eigen" height="260" role="img" aria-label="Interactive plot: eigenvectors staying on their lines under a matrix transformation"></canvas></div>
+      <div class="vis-controls">
+        <span class="vis-ctrl-label">λ₁</span>
+        <input type="range" class="vis-slider" id="ev-l1" aria-label="Eigenvalue lambda 1" min="-2" max="3" step="0.1" value="2" oninput="drawEigen()">
+        <span class="vis-val" id="ev-l1-val">2.0</span>
+        <span class="vis-ctrl-label">λ₂</span>
+        <input type="range" class="vis-slider" id="ev-l2" aria-label="Eigenvalue lambda 2" min="-2" max="3" step="0.1" value="0.5" oninput="drawEigen()">
+        <span class="vis-val" id="ev-l2-val">0.5</span>
+      </div>
+      <div class="vis-controls" style="border-top:none;padding-top:0">
+        <span class="vis-ctrl-label">Angle θ</span>
+        <input type="range" class="vis-slider" id="ev-theta" aria-label="Eigenvector angle" min="0" max="180" step="2" value="45" oninput="drawEigen()">
+        <span class="vis-val" id="ev-theta-val">45°</span>
+      </div>
+      <div class="vis-desc">Eigenvectors (coloured arrows) stay on the same line — only scaled by eigenvalue λ. All other vectors rotate. Drag λ₁, λ₂ negative to see reflection.</div>
+    </div>
+
+    <!-- Viz 3: Projection -->
+    <div class="vis-card">
+      <div class="vis-card-header">
+        <div class="vis-card-title">Projection onto a Line</div>
+        <span class="vis-card-tag" style="background:var(--green3);color:var(--green)">Week 3</span>
+      </div>
+      <div class="vis-canvas-wrap"><canvas class="vis-canvas" id="c-proj" height="260" role="img" aria-label="Interactive plot: projection of a vector onto a line with the perpendicular error"></canvas></div>
+      <div class="vis-controls">
+        <span class="vis-ctrl-label">Line angle</span>
+        <input type="range" class="vis-slider" id="proj-angle" aria-label="Line angle" min="0" max="180" step="2" value="35" oninput="drawProjection()">
+        <span class="vis-val" id="proj-angle-val">35°</span>
+        <span class="vis-ctrl-label">bₓ</span>
+        <input type="range" class="vis-slider" id="proj-bx" aria-label="Vector b, x component" min="-2" max="2" step="0.1" value="1.5" oninput="drawProjection()">
+        <span class="vis-val" id="proj-bx-val">1.5</span>
+      </div>
+      <div class="vis-desc">Vector <strong style="color:var(--blue)">b</strong> projects onto line <strong style="color:var(--gold)">a</strong>. The projection <strong style="color:var(--green)">p = (aᵀb/aᵀa)a</strong>. Error <strong style="color:var(--red)">e = b−p</strong> is always perpendicular to a.</div>
+    </div>
+
+    <!-- Viz 4: SVD Unit Circle -->
+    <div class="vis-card">
+      <div class="vis-card-header">
+        <div class="vis-card-title">SVD: Circle → Ellipse</div>
+        <span class="vis-card-tag" style="background:var(--purple3);color:var(--purple)">Week 4</span>
+      </div>
+      <div class="vis-canvas-wrap"><canvas class="vis-canvas" id="c-svd" height="260" role="img" aria-label="Interactive plot: the unit circle mapped to an ellipse by singular values"></canvas></div>
+      <div class="vis-controls">
+        <span class="vis-ctrl-label">σ₁</span>
+        <input type="range" class="vis-slider" id="svd-s1" aria-label="Singular value sigma 1" min="0.3" max="3" step="0.1" value="2" oninput="drawSVD()">
+        <span class="vis-val" id="svd-s1-val">2.0</span>
+        <span class="vis-ctrl-label">σ₂</span>
+        <input type="range" class="vis-slider" id="svd-s2" aria-label="Singular value sigma 2" min="0.1" max="2" step="0.1" value="0.7" oninput="drawSVD()">
+        <span class="vis-val" id="svd-s2-val">0.7</span>
+      </div>
+      <div class="vis-controls" style="border-top:none;padding-top:0">
+        <span class="vis-ctrl-label">Rotation</span>
+        <input type="range" class="vis-slider" id="svd-rot" aria-label="Rotation" min="0" max="360" step="3" value="30" oninput="drawSVD()">
+        <span class="vis-val" id="svd-rot-val">30°</span>
+      </div>
+      <div class="vis-desc">Every matrix maps the unit circle to an ellipse. σ₁, σ₂ are the singular values — semi-axis lengths. The singular vectors U (output) and V (input) are the ellipse axes.</div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<div class="complete-banner" id="complete-banner" role="dialog" aria-label="Mission complete">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,12vw,90px);color:var(--green);line-height:1;text-align:center;">MISSION<br>COMPLETE</div>
+  <p style="font-family:'Crimson Pro',serif;font-size:clamp(16px,2.5vw,22px);font-style:italic;color:var(--muted);margin-top:20px;text-align:center;max-width:480px;line-height:1.6">You finished the 30-day mission.<br>Go build something extraordinary.</p>
+  <button onclick="document.getElementById('complete-banner').classList.remove('show')" style="margin-top:28px;background:rgba(32,212,126,0.12);border:1px solid rgba(32,212,126,0.4);color:var(--green);padding:10px 28px;border-radius:6px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.14em;">CLOSE ✕</button>
+</div>
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Image preview"><img id="lightbox-img" src="" alt=""><button class="lb-close" id="lb-close">✕ CLOSE</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<footer>
+  <p>"The goal is not to finish fast — it's to see the geometry so clearly you could explain it to a friend."</p>
+  <p class="footer-credit">Course material belongs to its authors: <a href="https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/" target="_blank" rel="noopener">MIT OpenCourseWare 18.06SC</a> (CC BY-NC-SA) and <a href="https://www.3blue1brown.com/topics/linear-algebra" target="_blank" rel="noopener">3Blue1Brown</a>. This is an independent study tool, not affiliated with either.</p>
+</footer>
+
+</body>
+</html>
