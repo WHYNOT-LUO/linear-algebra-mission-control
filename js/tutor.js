@@ -16,11 +16,13 @@ function getAIKey(){return store.getObj(AI_KEY_STORE,'');}
 function refreshAIKeyUI(){
   const key=getAIKey();
   const panel=document.getElementById('ai-key-panel');
+  const note=document.getElementById('ai-demo-note');
   const status=document.getElementById('ai-key-status');
   const text=document.getElementById('ai-key-status-text');
   const input=document.getElementById('ai-input');
   const btn=document.getElementById('ai-send-btn');
   if(panel)panel.hidden=!!key;
+  if(note)note.hidden=!!key;
   if(status)status.hidden=!key;
   if(text)text.textContent=key?'Key saved (ends …'+key.slice(-4)+')':'';
   if(input){input.disabled=!key;input.placeholder=key?'Ask anything about linear algebra... (Enter to send, Shift+Enter for newline)':'Add your API key above to start chatting';}

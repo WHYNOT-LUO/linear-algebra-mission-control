@@ -608,3 +608,11 @@ footer p+p{margin-top:12px;}
   *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;
     transition-duration:0.001ms !important;scroll-behavior:auto !important;}
 }
+
+/* AI tutor: explainer shown until a key is saved */
+.ai-demo-note{border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--radius);
+  background:var(--bg2);padding:18px 22px;margin-bottom:18px;}
+.ai-demo-note[hidden]{display:none;}
+.ai-demo-note-tag{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.ai-demo-note p{font-family:'Crimson Pro',serif;font-size:15px;line-height:1.7;color:var(--muted);}
+.ai-demo-note p+p{margin-top:10px;}

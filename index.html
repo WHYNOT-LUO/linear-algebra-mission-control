@@ -158,9 +158,15 @@
   <div class="ai-page-title">🤖 AI Tutor</div>
   <div class="ai-page-sub">Ask me anything about linear algebra — I'll explain with geometry and intuition.</div>
 
+  <div class="ai-demo-note" id="ai-demo-note">
+    <div class="ai-demo-note-tag">Optional feature — bring your own key</div>
+    <p>Everything else on this site works with no setup: the 30-day plan, progress tracking, flashcards, quizzes and the visualizations. The tutor is the one part that needs an API key.</p>
+    <p>This site is hosted on GitHub Pages, which serves static files only — there is no server to keep a secret on. Shipping my own key would mean publishing it in the page source for anyone to copy and spend. So the tutor asks each visitor for their own key instead, and keeps it in that visitor's browser.</p>
+  </div>
+
   <div class="ai-key-panel" id="ai-key-panel">
     <div class="ai-key-title">🔑 Connect your Anthropic API key</div>
-    <p class="ai-key-note">This site has no backend, so the tutor calls the Anthropic API straight from your browser using <em>your</em> key. The key is kept only in this browser's local storage and is sent only to <code>api.anthropic.com</code>. Use a key with a spend limit, and remove it when you are done on a shared computer.</p>
+    <p class="ai-key-note">The key is kept only in this browser's local storage and is sent only to <code>api.anthropic.com</code> — never to this site's author or anywhere else. Use a key with a spend limit, and press <strong>Remove key</strong> when you are done on a shared computer.</p>
     <form class="ai-key-row" id="ai-key-form" autocomplete="off">
       <input type="password" class="ai-key-input" id="ai-key-input" placeholder="sk-ant-…" aria-label="Anthropic API key" autocomplete="off" spellcheck="false">
       <button type="submit" class="ai-key-btn">Save key</button>
