@@ -159,12 +159,15 @@ async function sendAI(){
   chat.scrollTop=chat.scrollHeight;
 }
 
-// Minimal, XSS-safe formatting: **bold**, `code`, "- " bullets, and short "A = LU" style lines as formulas.
+// Minimal, XSS-safe formatting: **bold**, *italic*, `code`, "- " bullets, and short "A = LU" style lines as formulas.
 function formatAIText(text){
   const esc=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const isFormula=l=>l.length<70&&l.includes('=')&&!/[.?!:]$/.test(l.trim())&&l.trim().split(/\s+/).length<=9;
   return esc.split('\n').map(function(line){
-    const inline=line.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
+    const inline=line
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')       // bold first, so its asterisks are gone
+      .replace(/(^|[^*\w])\*([^*\n]+?)\*(?!\w)/g,'$1<em>$2</em>') // then leftover single asterisks
+      .replace(/`([^`]+)`/g,'<code>$1</code>');
     if(/^\s*[-*] /.test(line))return '<div class="ai-li">• '+inline.replace(/^\s*[-*] /,'')+'</div>';
     if(isFormula(line))return '<span class="formula">'+inline.trim()+'</span>';
     return inline;
