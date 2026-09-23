@@ -18,7 +18,7 @@ Four interactive canvas demos, each driven by live sliders:
 - **Notes and sketches.** Notes autosave per day. Photos of hand-drawn sketches are downscaled in the browser and shown in a gallery.
 - **Flashcards and quiz.** Flip cards and multiple choice across all four weeks, with week filters, a real shuffle and a running score.
 - **Interactive visualizations.** Canvas demos with live sliders: matrix transformation of the unit square, eigenvectors, projection onto a line, and SVD (unit circle to ellipse).
-- **AI tutor (optional).** A chat panel that calls the Anthropic API from the browser using the visitor's own key (see below).
+- **AI tutor (optional).** A chat panel that calls the DeepSeek API from the browser using the visitor's own key (see below).
 
 ## Run it
 
@@ -40,12 +40,12 @@ Then open <http://localhost:8000>. Opening `index.html` directly from disk also 
 
 GitHub Pages cannot keep a secret, so the tutor is *bring your own key*:
 
-- The visitor pastes their own Anthropic API key into the tutor tab.
-- The key is stored only in that browser's `localStorage` and is sent only to `https://api.anthropic.com`. It is never committed to this repository or sent anywhere else.
-- Requests go straight from the browser using Anthropic's opt-in direct-browser-access header. Use a key with a spend limit, and remove it (button on the tutor tab) on shared machines.
+- The visitor pastes their own DeepSeek API key into the tutor tab.
+- The key is stored only in that browser's `localStorage` and is sent only to `https://api.deepseek.com`. It is never committed to this repository or sent anywhere else.
+- Requests go straight from the browser; DeepSeek's API sends the CORS headers that allow this. Keep only a small balance on the key, and remove it (button on the tutor tab) on shared machines.
 - Without a key the rest of the site works normally; the tutor tab simply asks for one.
 
-The model is set by `AI_MODEL` at the top of [`js/tutor.js`](js/tutor.js).
+The model is set by `AI_MODEL` at the top of [`js/tutor.js`](js/tutor.js). DeepSeek speaks the OpenAI chat-completions dialect, so switching to another OpenAI-compatible provider means changing `AI_ENDPOINT` and `AI_MODEL` and nothing else.
 
 ## Project structure
 

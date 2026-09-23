@@ -1,17 +1,26 @@
 /* ════════════════════════════════════════════
    AI TUTOR
-   Static site, no backend: the visitor supplies their own Anthropic API key,
-   which is kept in this browser's localStorage and sent only to api.anthropic.com.
+   Static site, no backend: the visitor supplies their own DeepSeek API key,
+   which is kept in this browser's localStorage and sent only to api.deepseek.com.
 ════════════════════════════════════════════ */
-const AI_MODEL='claude-sonnet-5';
-const AI_ENDPOINT='https://api.anthropic.com/v1/messages';
-const AI_KEY_STORE='la30_apikey';
+const AI_MODEL='deepseek-chat';
+const AI_ENDPOINT='https://api.deepseek.com/chat/completions';
+const AI_KEY_STORE='la30_deepseek_key';
+const AI_LEGACY_KEY_STORES=['la30_apikey']; // keys saved for a previous provider
 const AI_MAX_HISTORY=20;
+const AI_TEMPERATURE=0.6; // low enough to keep the maths steady, high enough to vary the wording
 
 let aiHistory=[];
 let aiBusy=false;
 
 function getAIKey(){return store.getObj(AI_KEY_STORE,'');}
+
+/* A key saved when this app used a different provider must never be sent to the new one. */
+function dropLegacyAIKeys(){
+  AI_LEGACY_KEY_STORES.forEach(function(k){
+    if(store.getObj(k,''))store.setObj(k,'');
+  });
+}
 
 function refreshAIKeyUI(){
   const key=getAIKey();
@@ -34,7 +43,11 @@ function saveAIKey(e){
   e.preventDefault();
   const input=document.getElementById('ai-key-input');
   const key=(input.value||'').trim();
-  if(!/^sk-ant-[\w-]{20,}$/.test(key)){showToast('That does not look like an Anthropic API key');return;}
+  // another provider's key must not be sent to DeepSeek, so reject known foreign prefixes by name
+  const foreign=[['sk-ant-','an Anthropic'],['sk-or-','an OpenRouter'],['gsk_','a Groq'],['AIza','a Google']]
+    .find(function(f){return key.indexOf(f[0])===0;});
+  if(foreign){showToast('That looks like '+foreign[1]+' key — this tutor needs a DeepSeek key');return;}
+  if(!/^sk-[A-Za-z0-9_-]{16,}$/.test(key)){showToast('That does not look like a DeepSeek API key');return;}
   store.setObj(AI_KEY_STORE,key);
   input.value='';
   refreshAIKeyUI();
@@ -66,31 +79,40 @@ Rules:
 - Keep explanations concise but complete — aim for 2-4 paragraphs max
 - Use **bold** for key terms
 - For formulas, use a clear text notation like: Av = λv
+- Do not use LaTeX or markdown tables
 - Be encouraging — linear algebra is hard and the student is working hard`;
 }
 
-async function callAnthropic(key,system,messages){
+/* DeepSeek speaks the OpenAI chat-completions dialect: the system prompt is the first message. */
+async function callDeepSeek(key,system,messages){
   const response=await fetch(AI_ENDPOINT,{
     method:'POST',
     headers:{
       'content-type':'application/json',
-      'x-api-key':key,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
+      'authorization':'Bearer '+key
     },
-    body:JSON.stringify({model:AI_MODEL,max_tokens:1000,system,messages})
+    body:JSON.stringify({
+      model:AI_MODEL,
+      messages:[{role:'system',content:system}].concat(messages),
+      max_tokens:1000,
+      temperature:AI_TEMPERATURE,
+      stream:false
+    })
   });
   let data=null;
   try{data=await response.json();}catch(e){}
   if(!response.ok){
     const detail=data&&data.error&&data.error.message;
     const hint={401:'Your API key was rejected. Remove it and enter a valid one.',
-                403:'Your key is not allowed to use this model.',
+                402:'This DeepSeek account has no credit left. Top it up in the DeepSeek platform, then try again.',
+                422:'The request was malformed — please report this as a bug.',
                 429:'Rate limit reached. Wait a moment and try again.',
-                529:'The API is overloaded. Try again shortly.'}[response.status];
+                500:'DeepSeek had a server error. Try again shortly.',
+                503:'DeepSeek is overloaded right now. Try again shortly.'}[response.status];
     throw new Error(hint||detail||('Request failed ('+response.status+')'));
   }
-  const text=(data&&Array.isArray(data.content)?data.content:[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+  const choice=data&&Array.isArray(data.choices)?data.choices[0]:null;
+  const text=choice&&choice.message&&choice.message.content?choice.message.content.trim():'';
   if(!text)throw new Error('The model returned an empty response.');
   return text;
 }
@@ -116,12 +138,12 @@ async function sendAI(){
   chat.appendChild(typingDiv);chat.scrollTop=chat.scrollHeight;
 
   aiHistory.push({role:'user',content:userMsg});
-  // the API requires the first message to be from the user
+  // the API expects the conversation to start with a user turn
   let sendHistory=aiHistory.slice(-AI_MAX_HISTORY);
   while(sendHistory.length&&sendHistory[0].role!=='user')sendHistory.shift();
 
   try{
-    const replyText=await callAnthropic(key,aiSystemPrompt(topicLabel),sendHistory);
+    const replyText=await callDeepSeek(key,aiSystemPrompt(topicLabel),sendHistory);
     typingDiv.remove();
     appendAIMsg('assistant',replyText);
     aiHistory.push({role:'assistant',content:replyText});
@@ -130,7 +152,7 @@ async function sendAI(){
     typingDiv.remove();
     aiHistory.pop(); // drop the unanswered user turn so roles keep alternating
     const offline=err instanceof TypeError; // fetch rejects with TypeError on network failure
-    appendAIMsg('assistant',(offline?'Could not reach the Anthropic API. Check your connection and try again.':err.message),true);
+    appendAIMsg('assistant',(offline?'Could not reach the DeepSeek API. Check your connection and try again.':err.message),true);
   }
   aiBusy=false;
   refreshAIKeyUI();
@@ -161,6 +183,7 @@ function appendAIMsg(role,text,isError){
 }
 
 function initTutor(){
+  dropLegacyAIKeys();
   const form=document.getElementById('ai-key-form');
   if(form)form.addEventListener('submit',saveAIKey);
   const rm=document.getElementById('ai-key-remove');

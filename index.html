@@ -91,7 +91,7 @@
     <div class="feature-card blue" onclick="switchPage('ai')">
       <div class="feature-card-icon">🤖</div>
       <div class="feature-card-title">AI Tutor</div>
-      <div class="feature-card-desc">Ask anything about linear algebra and get geometric intuition, worked examples and clarifications. Uses your own Anthropic API key, stored only in your browser.</div>
+      <div class="feature-card-desc">Ask anything about linear algebra and get geometric intuition, worked examples and clarifications. Uses your own DeepSeek API key, stored only in your browser.</div>
       <button class="feature-card-cta">Open AI Tutor →</button>
     </div>
     <div class="feature-card gold" onclick="switchPage('quiz')">
@@ -165,13 +165,13 @@
   </div>
 
   <div class="ai-key-panel" id="ai-key-panel">
-    <div class="ai-key-title">🔑 Connect your Anthropic API key</div>
-    <p class="ai-key-note">The key is kept only in this browser's local storage and is sent only to <code>api.anthropic.com</code> — never to this site's author or anywhere else. Use a key with a spend limit, and press <strong>Remove key</strong> when you are done on a shared computer.</p>
+    <div class="ai-key-title">🔑 Connect your DeepSeek API key</div>
+    <p class="ai-key-note">The key is kept only in this browser's local storage and is sent only to <code>api.deepseek.com</code> — never to this site's author or anywhere else. DeepSeek accounts are prepaid, so keep only a small balance on the one you use here, and press <strong>Remove key</strong> when you are done on a shared computer.</p>
     <form class="ai-key-row" id="ai-key-form" autocomplete="off">
-      <input type="password" class="ai-key-input" id="ai-key-input" placeholder="sk-ant-…" aria-label="Anthropic API key" autocomplete="off" spellcheck="false">
+      <input type="password" class="ai-key-input" id="ai-key-input" placeholder="sk-…" aria-label="DeepSeek API key" autocomplete="off" spellcheck="false">
       <button type="submit" class="ai-key-btn">Save key</button>
     </form>
-    <a class="ai-key-link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Get a key from the Anthropic Console →</a>
+    <a class="ai-key-link" href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">Get a key from the DeepSeek platform →</a>
   </div>
   <div class="ai-key-status" id="ai-key-status" hidden>
     <span id="ai-key-status-text"></span>
