@@ -6,9 +6,14 @@ A 30-day linear algebra study tracker built around Gilbert Strang's **MIT 18.06*
 
 ![Landing page](assets/og-image.png)
 
+Four interactive canvas demos, each driven by live sliders:
+
+![Visualizations tab](assets/visuals.png)
+
 ## Features
 
 - **30-day plan.** Four weeks of daily sessions. Each day pairs a 3Blue1Brown video (geometry first), an MIT 18.06 lecture with the matching problem set and solutions, and a harder challenge problem.
+  Section numbers such as §2.6 refer to Gilbert Strang's *Introduction to Linear Algebra*, 5th edition.
 - **Progress tracking.** Per-task checkboxes, XP bar, day-streak counter, a 30-day calendar and per-week progress bars.
 - **Notes and sketches.** Notes autosave per day. Photos of hand-drawn sketches are downscaled in the browser and shown in a gallery.
 - **Flashcards and quiz.** Flip cards and multiple choice across all four weeks, with week filters, a real shuffle and a running score.
