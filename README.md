@@ -1,5 +1,7 @@
 # Linear Algebra · Mission Control
 
+**[Open the live site →](https://whynot-luo.github.io/linear-algebra-mission-control/)**
+
 A 30-day linear algebra study tracker built around Gilbert Strang's **MIT 18.06** and 3Blue1Brown's **Essence of Linear Algebra**. It turns the course into a daily plan with progress tracking, flashcards, quizzes and interactive geometry visualizations, and runs entirely in the browser with no build step and no backend.
 
 ![Landing page](assets/og-image.png)
