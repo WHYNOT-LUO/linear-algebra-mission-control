@@ -37,29 +37,36 @@ function daysLeft(){
 function localDateStr(d){
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
-function updateStreak(){
-  const now=new Date();
-  const today=localDateStr(now);
+function yesterdayStr(now){
+  return localDateStr(new Date(now.getFullYear(),now.getMonth(),now.getDate()-1));
+}
+/* Advances the streak, at most once a day. Called only when a task is actually completed,
+   so simply opening the app on a later day no longer inflates the count. */
+function recordStudyToday(){
+  const now=new Date(),today=localDateStr(now);
   if(streak.lastDate===today)return;
-  const yesterday=localDateStr(new Date(now.getFullYear(),now.getMonth(),now.getDate()-1));
-  if(totalDone()>0){
-    if(streak.lastDate===yesterday)streak.count++;
-    else if(streak.lastDate!==today)streak.count=1;
-    streak.lastDate=today;saveS();
-  }
+  streak.count=(streak.lastDate===yesterdayStr(now)?streak.count+1:1);
+  streak.lastDate=today;
+  saveS();
+}
+/* A streak not continued today or yesterday has lapsed, so it displays as 0
+   without overwriting the stored count. */
+function currentStreak(){
+  if(!streak.lastDate)return 0;
+  const now=new Date();
+  return (streak.lastDate===localDateStr(now)||streak.lastDate===yesterdayStr(now))?streak.count:0;
 }
 
 /* ── XP / UI Update ── */
 function updateXP(){
-  updateStreak();
   const done=totalDone(),total=totalTasks(),pct=total?Math.round(done/total*100):0;
   const f=document.getElementById('xp-fill');if(f)f.style.width=(total?done/total*100:0).toFixed(1)+'%';
   const xt=document.getElementById('xp-text');if(xt)xt.textContent=done+' / '+total+' complete';
   const hd=document.getElementById('hero-done');if(hd)hd.textContent=done;
-  const hs=document.getElementById('hero-streak');if(hs)hs.textContent=streak.count+'🔥';
+  const hs=document.getElementById('hero-streak');if(hs)hs.textContent=currentStreak()+'🔥';
   const hp=document.getElementById('hero-pct');if(hp)hp.textContent=pct+'%';
   const hl=document.getElementById('hero-days');if(hl)hl.textContent=daysLeft();
-  const ns=document.getElementById('nav-streak');if(ns)ns.textContent=streak.count;
+  const ns=document.getElementById('nav-streak');if(ns)ns.textContent=currentStreak();
   const wx=document.getElementById('week-xp');if(wx)wx.textContent=weekDone(activeWeek)+'/'+weekTotal(activeWeek);
   WEEKS.forEach((_,wi)=>{const tp=document.getElementById('tp-'+wi);if(tp)tp.textContent=weekDone(wi)+'/'+weekTotal(wi);});
   WEEKS.forEach((_,wi)=>{const bar=document.getElementById('wbar-fill-'+wi);if(bar){const wt=weekTotal(wi);bar.style.width=wt?(weekDone(wi)/wt*100).toFixed(0)+'%':'0%';}});
@@ -153,6 +160,7 @@ function buildDay(wi,di,day){
     row.querySelector('.task-check').addEventListener('click',function(e){
       e.stopPropagation();
       completed[key]=!completed[key];saveC();
+      if(completed[key])recordStudyToday();
       row.classList.toggle('done',completed[key]);
       const chk=row.querySelector('.task-check');
       chk.textContent=completed[key]?'✓':'';chk.setAttribute('aria-pressed',String(!!completed[key]));
@@ -214,7 +222,8 @@ function buildDay(wi,di,day){
     this.value='';
   });
   body.appendChild(uz);
-  renderUploads(wi,di);
+  // the card is not in the document yet, so hand renderUploads the grid it should fill
+  renderUploads(wi,di,uz.querySelector('.uploads-grid'));
   card.appendChild(hdr);card.appendChild(body);
   return card;
 }
@@ -239,8 +248,9 @@ function downscaleImage(file,maxSide,quality){
   });
 }
 
-function renderUploads(wi,di){
-  const grid=document.getElementById('ug-'+wi+'-'+di);if(!grid)return;
+/* gridEl lets callers pass the grid before the card is attached to the document. */
+function renderUploads(wi,di,gridEl){
+  const grid=gridEl||document.getElementById('ug-'+wi+'-'+di);if(!grid)return;
   const key=wi+'-'+di;const imgs=uploads[key]||[];
   grid.innerHTML='';
   imgs.forEach(function(item,idx){
@@ -259,7 +269,7 @@ function buildStats(){
   const done=totalDone(),total=totalTasks();
   const sc_done=document.getElementById('sc-done');if(sc_done)sc_done.textContent=done;
   const sc_sub=document.getElementById('sc-done-sub');if(sc_sub)sc_sub.textContent='of '+total+' total ('+(total?Math.round(done/total*100):0)+'%)';
-  const sc_streak=document.getElementById('sc-streak');if(sc_streak)sc_streak.textContent=streak.count;
+  const sc_streak=document.getElementById('sc-streak');if(sc_streak)sc_streak.textContent=currentStreak();
   const sc_days=document.getElementById('sc-days');if(sc_days)sc_days.textContent=daysActive();
   const sc_up=document.getElementById('sc-uploads');if(sc_up)sc_up.textContent=totalUploads();
   const cal=document.getElementById('cal-grid');

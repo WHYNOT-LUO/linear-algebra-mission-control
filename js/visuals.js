@@ -118,7 +118,6 @@ function drawProjection(){
   const{ctx,w,h}=v;
   const angle=parseFloat(document.getElementById('proj-angle').value)*Math.PI/180;
   const bx=parseFloat(document.getElementById('proj-bx').value);
-  const by=parseFloat(document.getElementById('proj-bx').value)*0.8+0.4;
   document.getElementById('proj-angle-val').textContent=document.getElementById('proj-angle').value+'°';
   document.getElementById('proj-bx-val').textContent=bx.toFixed(1);
   const scale=55,ox=w/2,oy=h/2;
@@ -146,13 +145,17 @@ function drawProjection(){
   // draw error e (from p to b)
   const epx=ox+px*scale,epy=oy-py*scale;
   drawArrow(ctx,epx,epy,scale,ex,ey,getColor('--red'),'e');
-  // right angle marker at p
-  const size=8;const nx=-ay,ny=-ax;
+  // Right-angle marker at p, drawn from two unit vectors that are perpendicular by
+  // construction: â along the line, and ê along the error. Converting each to screen
+  // coordinates only flips y, so the right angle survives the conversion.
+  const size=8;
+  const elen=Math.hypot(ex,ey)||1;
+  const aScreen=[ax,-ay],eScreen=[ex/elen,-ey/elen];
   ctx.strokeStyle=getColor('--dim');ctx.lineWidth=1;
   ctx.beginPath();
-  ctx.moveTo(epx+size*nx,epy-size*ny);
-  ctx.lineTo(epx+size*nx+size*ax,epy-size*ny-size*ay);
-  ctx.lineTo(epx+size*ax,epy-size*ay);
+  ctx.moveTo(epx+size*eScreen[0],epy+size*eScreen[1]);
+  ctx.lineTo(epx+size*eScreen[0]+size*aScreen[0],epy+size*eScreen[1]+size*aScreen[1]);
+  ctx.lineTo(epx+size*aScreen[0],epy+size*aScreen[1]);
   ctx.stroke();
   ctx.font='11px Space Mono,monospace';ctx.fillStyle=getColor('--muted');
   ctx.fillText('e ⊥ a',10,20);

@@ -2,3 +2,13 @@
 *.ocr.txt
 node_modules/
 .claude/
+
+# Never publish: personal files that happen to sit in this folder
+Passwords.rtf
+*.rtf
+*.docx
+*.pdf
+.env
+*.key
+# local dev artifact: the pre-refactor single-file version
+linear-algebra-enhanced.original.html
