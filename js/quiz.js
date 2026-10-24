@@ -88,6 +88,7 @@ function markFlash(correct){
 function renderMC(content){
   const q=quizCards[quizIdx];
   content.innerHTML='';
+  let nextBtn=null;
   const qDiv=document.createElement('div');qDiv.className='mc-question';qDiv.textContent=q.q;
   content.appendChild(qDiv);
   const opts=document.createElement('div');opts.className='mc-options';
@@ -104,6 +105,7 @@ function renderMC(content){
       if(i===q.correct){btn.classList.add('correct');quizCorrect++;}
       else{btn.classList.add('wrong');opts.querySelectorAll('.mc-option')[q.correct].classList.add('correct');quizWrong++;}
       if(exp)exp.classList.add('show');
+      if(nextBtn){nextBtn.disabled=false;nextBtn.title='';}
       updateQuizScore();
     });
     opts.appendChild(btn);
@@ -113,8 +115,15 @@ function renderMC(content){
   expDiv.innerHTML='<strong>Explanation:</strong> '+q.exp;
   content.appendChild(expDiv);
   const nav=document.createElement('div');nav.className='quiz-nav';
-  nav.innerHTML='<div class="quiz-counter">'+(quizIdx+1)+' / '+quizCards.length+'</div>'+
-    '<button class="quiz-btn" onclick="quizIdx++;renderQuiz()">Next →</button>';
+  nav.innerHTML='<div class="quiz-counter">'+(quizIdx+1)+' / '+quizCards.length+'</div>';
+  // Skipping past an unanswered question would leave it out of the tally and inflate the
+  // final percentage, so Next only unlocks once an option has been chosen.
+  nextBtn=document.createElement('button');
+  nextBtn.className='quiz-btn';nextBtn.textContent='Next →';
+  nextBtn.disabled=true;
+  nextBtn.title='Choose an answer first';
+  nextBtn.addEventListener('click',function(){quizIdx++;renderQuiz();});
+  nav.appendChild(nextBtn);
   content.appendChild(nav);
 }
 

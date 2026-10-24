@@ -150,7 +150,6 @@ Day cards, task checkboxes, flashcards and quiz options are operable by keyboard
 - **Browser coverage.** Developed and tested in Chromium-based browsers. Safari and Firefox are untested.
 - **No sync.** Progress is per-browser and per-device by design; there is no account system, so it does not follow you to another machine.
 - **The tutor needs the visitor's own key** and a prepaid DeepSeek balance. If the balance runs out the tutor reports it cleanly, but it stops answering.
-- **Multiple choice allows skipping.** Pressing *Next* without answering advances without scoring, so a session with skipped questions reports a higher percentage than it should.
 
 ## Credits
 

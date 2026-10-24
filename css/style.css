@@ -460,7 +460,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9994;pointer-events:none;o
 .quiz-btn{background:var(--bg2);border:1px solid var(--line);color:var(--muted);
   padding:9px 20px;border-radius:var(--radius);cursor:pointer;font-family:'Space Mono',monospace;
   font-size:11px;letter-spacing:0.08em;transition:all 0.2s;}
-.quiz-btn:hover{border-color:var(--dim);color:var(--text);}
+.quiz-btn:hover:not(:disabled){border-color:var(--dim);color:var(--text);}
+.quiz-btn:disabled{opacity:0.4;cursor:not-allowed;}
 .quiz-btn.correct{background:var(--green3);border-color:rgba(32,212,126,0.4);color:var(--green);}
 .quiz-btn.wrong{background:var(--red3);border-color:rgba(255,64,96,0.35);color:var(--red);}
 .quiz-counter{font-size:12px;color:var(--muted);}
