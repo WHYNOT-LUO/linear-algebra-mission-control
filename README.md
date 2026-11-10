@@ -1,6 +1,7 @@
 # Linear Algebra · Mission Control
 
 [![Live demo](https://img.shields.io/badge/demo-live-success)](https://whynot-luo.github.io/linear-algebra-mission-control/)
+[![Tests](https://github.com/WHYNOT-LUO/linear-algebra-mission-control/actions/workflows/test.yml/badge.svg)](https://github.com/WHYNOT-LUO/linear-algebra-mission-control/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)](#architecture)
 
@@ -91,6 +92,7 @@ js/quiz.js            flashcard and quiz engine
 js/visuals.js         the four canvas visualizations
 js/main.js            startup wiring
 assets/               favicon and preview images
+tests/data.test.js    checks on the plan and quiz data (node --test)
 ```
 
 Plain HTML, CSS and JavaScript with no dependencies, no bundler and no transpiler. The scripts are classic `<script defer>` files sharing one global scope, loaded in the order listed in `index.html` — data files first, then the modules that read them, then `main.js`, which wires up the DOM on `DOMContentLoaded`.
@@ -108,6 +110,14 @@ python3 -m http.server 8000
 Then open <http://localhost:8000>.
 
 Opening `index.html` straight from disk also renders the tracker, quiz and visualizations. The AI tutor has only been tested over `http(s)`.
+
+## Tests
+
+```bash
+node --test
+```
+
+Needs Node.js 20 or newer and nothing else. The nine checks cover the data rather than the page: every script and file `index.html` loads exists and parses, days run 1 to 30 with no gaps, every task has a working-looking link or an existing problem set, and every quiz question marks an answer that is one of its options. They run on GitHub for every push. Rendering, the tutor and the canvases are not covered.
 
 ## Deploying
 
